@@ -1,6 +1,5 @@
 package document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -53,7 +52,7 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumSentences()
 	{
-        return getTokens("([\\.\\!\\?]\\s)|(\\S|\\s)$").size();			//TODO: mw2g
+        return getTokens("([\\.\\!\\?\\:\\;]\\s)|(\\S|\\s)$").size();			//TODO: mw2g
 	}
 	
 	/**
@@ -78,7 +77,16 @@ public class BasicDocument extends Document
 		// expression for the syllable counting.  We recommend you implement 
 		// the helper function countSyllables in Document.java using a loop, 
 		// and then call it here on each word.
-        return getTokens("(([euioayEUIOAY]([qwrtpsdfghjklzxcvbnm]|([euioayEUIOAY](\\s|$)))|([qwrtpsdfghjklzxcvbnm]|\\s|^)[euioay]\\s)|[yoi]\\W|\\W[euioay]$)").size();			//TODO: mw2g
+		
+//		int numSyllables = 0;
+//		List<String> words = getTokens("[A-Za-z]+");
+//		
+//		for (String word : words) {
+//			numSyllables += countSyllables(word);
+//		}
+//		return numSyllables;
+//        return getTokens("(([euioayEUIOAY]([qwrtpsdfghjklzxcvbnm]|([euioayEUIOAY](\\s|$)))|([qwrtpsdfghjklzxcvbnm]|\\s|^)[euioay]\\s)|[yoi]\\W|\\W[euioay]$)").size();			//TODO: mw2g
+        return getTokens("[QWRTPSDFGHJKLZXCVBNMqwrtpsdfghjklzxcvbnm][EUIOAYeuioay]|([EUIOAYeuioay]+([QWRTPSDFGHJKLZXCVBNMqwrtpsdfghjklzxcvbnm]*([eE]\\b)?|[EUIOAYeuioay]))").size();			//TODO: mw2g
 	}
 	
 	
@@ -97,7 +105,7 @@ public class BasicDocument extends Document
 				16, 13, 5);
 		testCase(new BasicDocument(""), 0, 0, 0);
 		testCase(new BasicDocument("sentence, with, lots, of, commas.!  "
-		        + "(And some poaren)).  The output is: 7.5."), 15, 11, 3);
+		        + "(And some poaren)).  The output is: 7.5."), 15, 11, 4);
 		testCase(new BasicDocument("many???  Senteeeeeeeeeences are"), 6, 3, 2);
 		testCase(new BasicDocument("Here is a series of test sentences. Your program should "
 				+ "find 3 sentences, 33 words, and 49 syllables. Not every word will have "
