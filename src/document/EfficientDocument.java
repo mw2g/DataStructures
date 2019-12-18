@@ -43,6 +43,30 @@ public class EfficientDocument extends Document {
      * and sentences, and set the member variables appropriately.
      * Words, sentences and syllables are defined as described below. 
      */
+	
+	protected int countSyllables(String word)
+	{
+		int numSyllables = 0;
+		boolean newSyllable = true;
+		String vowels = "eyuioaEYUIOA";
+		char[] cArray = word.toCharArray();
+		for (int i = 0; i < cArray.length; i++)
+		{
+		    if (i == cArray.length-1 && cArray[i] == 'e' 
+		    		&& newSyllable && numSyllables > 0) {
+                numSyllables--;
+            }
+		    if (newSyllable && vowels.indexOf(cArray[i]) >= 0) {
+				newSyllable = false;
+				numSyllables++;
+			}
+			else if (vowels.indexOf(cArray[i]) < 0) {
+				newSyllable = true;
+			}
+		}
+		return numSyllables;
+	}
+	
 	private void processText()
 	{
 		// Call getTokens on the text to preserve separate strings that are 
@@ -52,6 +76,20 @@ public class EfficientDocument extends Document {
 		// OF THIS METHOD.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
 		
+		for (int i = 0; i < tokens.size(); i++) {
+			
+			if (isWord(tokens.get(i))) {
+				
+				numWords++;
+				if (i == tokens.size() - 1) numSentences++;
+				
+				numSyllables = numSyllables + countSyllables(tokens.get(i));
+				
+			} else {
+				
+				numSentences++;
+			}
+		}
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.  isWord defined above will also help.
 	}
@@ -73,8 +111,6 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
 		//TODO: write this method.  Hint: It's simple
-//		numSentences = getTokens("(A-Z0-9) (a-zA-Z0-9 )*(.!?)").size();
-		numSentences = getTokens("(a-zA-Z0-9 )+").size();
 		return numSentences;
 	}
 
@@ -96,7 +132,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+	    return numWords;
 	}
 
 
@@ -118,7 +154,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSyllables;
 	}
 	
 	// Can be used for testing
