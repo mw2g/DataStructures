@@ -123,7 +123,11 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddEnd()
 	{
-        // TODO: implement this test
+		shortList.add("A");
+		shortList.add("B");
+		shortList.add("C");
+		
+		assertEquals("Check last element", "C", shortList.get(shortList.size - 1));
 		
 	}
 
@@ -144,7 +148,12 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddAtIndex()
 	{
-        // TODO: implement this test
+		shortList.add("A");
+		shortList.add("B");
+		shortList.add("C");
+		shortList.add(1, "Z");
+		
+		assertEquals("Check last element", "Z", shortList.get(1));
 		
 	}
 	

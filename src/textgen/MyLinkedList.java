@@ -51,12 +51,12 @@ public class MyLinkedList<E> extends AbstractList<E> {
 			
 			throw new IndexOutOfBoundsException();
 		}
-		LLNode<E> select = head.next;
+		LLNode<E> select = head;
 		for (int i = 0; i < size; i++) {
+			select = select.next;
 			if (i == index) {
 				return select.data;
 			}
-			select = select.next;
 		}
 		// TODO: Implement this method.
 		throw new IndexOutOfBoundsException();
@@ -69,7 +69,25 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	 */
 	public void add(int index, E element ) 
 	{
-		// TODO: Implement this method
+		if (element == null || index < 0) {
+			throw new NullPointerException();
+		}
+		
+		LLNode<E> insertNode = head;
+		
+		for (int i = 0; i < size; i++) {
+			insertNode = insertNode.next;
+			if (i == index) {
+				break;
+			}
+		}
+		
+		LLNode<E> newNode = new LLNode<E>(element);
+		newNode.next = insertNode;
+		newNode.prev = insertNode.prev;
+		insertNode.prev.next = newNode;
+		insertNode.prev = newNode;
+		size++;
 	}
 
 
