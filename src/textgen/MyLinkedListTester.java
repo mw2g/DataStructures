@@ -5,8 +5,6 @@ package textgen;
 
 import static org.junit.Assert.*;
 
-import java.util.LinkedList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -109,6 +107,19 @@ public class MyLinkedListTester {
 	@Test
 	public void testRemove()
 	{
+		try {
+			list1.remove(-1);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+		try {
+			list1.remove(list1.size);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+		
 		int a = list1.remove(0);
 		assertEquals("Remove: check a is correct ", 65, a);
 		assertEquals("Remove: check element 0 is correct ", (Integer)21, list1.get(0));
@@ -136,7 +147,8 @@ public class MyLinkedListTester {
 	@Test
 	public void testSize()
 	{
-		// TODO: implement this test
+		
+		assertEquals("Check size of list", longerList.size, longerList.size());
 	}
 
 	
@@ -148,20 +160,56 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddAtIndex()
 	{
+		try {
+			shortList.add(-1, "Z");
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+		try {
+			shortList.add(list1.size, "Z");
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+		
+		try {
+			shortList.add(0, null);
+			fail("Check null element");
+		}
+		catch (NullPointerException e) {
+		}
+		
 		shortList.add("A");
 		shortList.add("B");
 		shortList.add("C");
 		shortList.add(1, "Z");
 		
-		assertEquals("Check last element", "Z", shortList.get(1));
-		
+		assertEquals("Check index 1 element", "Z", shortList.get(1));
 	}
 	
 	/** Test setting an element in the list */
 	@Test
 	public void testSet()
 	{
-	    // TODO: implement this test
+		try {
+			list1.set(10, 777);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+		}
+		
+		try {
+			list1.set(0, null);
+			fail("Check null element");
+		}
+		catch (NullPointerException e) {
+		}
+		
+		int a = list1.set(0, 777);
+		assertEquals("Set: check a is correct ", 65, a);
+		assertEquals("Set: check element 0 is correct ", (Integer)777, list1.get(0));
+		assertEquals("Set: check size is correct ", 3, list1.size());
 	    
 	}
 	

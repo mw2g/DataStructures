@@ -2,8 +2,8 @@ package textgen;
 
 import java.util.AbstractList;
 
-
-/** A class that implements a doubly linked list
+/**
+ * A class that implements a doubly linked list
  * 
  * @author UC San Diego Intermediate Programming MOOC team
  *
@@ -26,10 +26,10 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 	/**
 	 * Appends an element to the end of the list
+	 * 
 	 * @param element The element to add
 	 */
-	public boolean add(E element ) throws NullPointerException
-	{
+	public boolean add(E element) throws NullPointerException {
 		if (element == null) {
 			throw new NullPointerException();
 		}
@@ -43,12 +43,14 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		return true;
 	}
 
-	/** Get the element at position index 
-	 * @throws IndexOutOfBoundsException if the index is out of bounds. */
-	public E get(int index) throws IndexOutOfBoundsException
-	{	
+	/**
+	 * Get the element at position index
+	 * 
+	 * @throws IndexOutOfBoundsException if the index is out of bounds.
+	 */
+	public E get(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index > size || size == 0) {
-			
+
 			throw new IndexOutOfBoundsException();
 		}
 		LLNode<E> select = head;
@@ -64,68 +66,120 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 	/**
 	 * Add an element to the list at the specified index
-	 * @param The index where the element should be added
+	 * 
+	 * @param The     index where the element should be added
 	 * @param element The element to add
 	 */
-	public void add(int index, E element ) 
-	{
-		if (element == null || index < 0) {
+	public void add(int index, E element) {
+		
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		if (element == null) {
 			throw new NullPointerException();
 		}
-		
+
 		LLNode<E> insertNode = head;
-		
+		LLNode<E> newNode = new LLNode<E>(element);
+
+		if (index == size) {
+			
+			tail.prev.next = newNode;
+			newNode.next = tail;
+			newNode.prev = tail.prev;
+			tail.prev = newNode;
+			 
+		}else {
+			
+
 		for (int i = 0; i < size; i++) {
 			insertNode = insertNode.next;
 			if (i == index) {
 				break;
 			}
 		}
-		
-		LLNode<E> newNode = new LLNode<E>(element);
+
 		newNode.next = insertNode;
 		newNode.prev = insertNode.prev;
 		insertNode.prev.next = newNode;
 		insertNode.prev = newNode;
+		}
 		size++;
 	}
 
-
 	/** Return the size of the list */
-	public int size() 
-	{
+	public int size() {
+		int size = 0;
+		LLNode<E> node = head;
+		while (node != tail) {
+			node = node.next;
+			size++;
+		}
 		// TODO: Implement this method
-		return -1;
+		return size - 1;
 	}
 
-	/** Remove a node at the specified index and return its data element.
+	/**
+	 * Remove a node at the specified index and return its data element.
+	 * 
 	 * @param index The index of the element to remove
 	 * @return The data element removed
 	 * @throws IndexOutOfBoundsException If index is outside the bounds of the list
 	 * 
 	 */
-	public E remove(int index) 
-	{
-		// TODO: Implement this method
-		return null;
+	public E remove(int index) {
+		if (index < 0 || index > size - 1) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		LLNode<E> removeNode = head;
+
+		for (int i = 0; i < size; i++) {
+			removeNode = removeNode.next;
+			if (i == index) {
+				break;
+			}
+		}
+
+		removeNode.prev.next = removeNode.next;
+		removeNode.next.prev = removeNode.prev;
+		size--;
+		return removeNode.data;
 	}
 
 	/**
 	 * Set an index position in the list to a new element
-	 * @param index The index of the element to change
+	 * 
+	 * @param index   The index of the element to change
 	 * @param element The new element
 	 * @return The element that was replaced
 	 * @throws IndexOutOfBoundsException if the index is out of bounds.
 	 */
-	public E set(int index, E element) 
-	{
-		// TODO: Implement this method
-		return null;
-	}   
+	public E set(int index, E element) {
+		if (index < 0 || index > size - 1) {
+			throw new IndexOutOfBoundsException();
+		}
+		if (element == null) {
+			throw new NullPointerException();
+		}
+
+		LLNode<E> setNode = head;
+		E replacedElement;
+		for (int i = 0; i < size; i++) {
+			setNode = setNode.next;
+			if (i == index) {
+				break;
+			}
+		}
+
+		replacedElement = setNode.data;
+		setNode.data = element;
+
+		return replacedElement;
+	}
 }
 
-class LLNode<E> 
-{
+class LLNode<E> {
 	LLNode<E> prev;
 	LLNode<E> next;
 	E data;
@@ -133,8 +187,7 @@ class LLNode<E>
 	// TODO: Add any other methods you think are useful here
 	// E.g. you might want to add another constructor
 
-	public LLNode(E e) 
-	{
+	public LLNode(E e) {
 		this.data = e;
 		this.prev = null;
 		this.next = null;
