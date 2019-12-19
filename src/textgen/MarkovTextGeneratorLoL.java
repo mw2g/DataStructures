@@ -1,5 +1,6 @@
 package textgen;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -32,7 +33,35 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	@Override
 	public void train(String sourceText)
 	{
+		String[] source = sourceText.split(" ");
+		starter = source[0];
+		String prevWord = starter;
+		wordList.add(new ListNode(starter));
+		
+		for (String word : source) {
+			for (ListNode wordNode : wordList) {
+				if (wordNode.getWord() == prevWord) {
+					wordNode.addNextWord(word);
+				} else {
+					wordList.add(new ListNode(prevWord));
+					wordList.get(wordList.size()-1).addNextWord(word);
+				}
+			}
+			prevWord = word;
+		}
+		wordList.get(wordList.size()-1).addNextWord(starter);
 		// TODO: Implement this method
+	}
+	
+	private boolean checkWordInList(String word) {				//TODO: mw2g
+
+		for (ListNode wordNode : wordList) {
+			if (wordNode.getWord() == word) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/** 
@@ -146,7 +175,8 @@ class ListNode
 	    // the MarkovTextGeneratorLoL class
 	    return null;
 	}
-
+	
+	
 	public String toString()
 	{
 		String toReturn = word + ": ";
