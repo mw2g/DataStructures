@@ -12,13 +12,13 @@ import java.util.LinkedList;
  * @author You
  *
  */
-public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
+public class AutoCompleteMatchCase implements  Dictionary, AutoComplete {
 
     private TrieNode root;
     private int size;
     
 
-    public AutoCompleteDictionaryTrie()
+    public AutoCompleteMatchCase()
 	{
 		root = new TrieNode();
 	}
@@ -40,7 +40,32 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public boolean addWord(String word)
 	{
-		word = word.toLowerCase();
+//		word = word.toLowerCase();
+		
+		char[] chars = word.toCharArray();
+		int upp = 0;
+		for (int i = 0; i < chars.length; i++) {
+			if (Character.isUpperCase(chars[i])) {
+				upp++;
+			} 
+		}
+		
+		if (upp == word.length() || upp == 0 || (Character.isUpperCase(word.charAt(0)) && upp == 1)) {
+			
+		} else if (upp == word.length() - 1) {
+			
+			word = word.toUpperCase();
+			
+		} else if (Character.isUpperCase(word.charAt(0)) && upp == 2) {
+			for (int i = 1; i < chars.length; i++) {
+				chars[i] = Character.toLowerCase(chars[i]);
+			}
+			word = chars.toString();
+			
+		} else 
+			
+			word = word.toLowerCase();
+		
 	    //TODO: Implement this method.
 		if (!isWord(word)) {
 			TrieNode curr = root;
@@ -77,7 +102,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	@Override
 	public boolean isWord(String s) 
 	{
-		s = s.toLowerCase();
+//		s = s.toLowerCase();
 	    // TODO: Implement this method
 		TrieNode curr = root;
 		for (int i = 0; i < s.length(); i++) {
@@ -123,7 +148,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     		 return postfix;
     	 }
     	 
-    	 prefix = prefix.toLowerCase();
+//    	 prefix = prefix.toLowerCase();
     	 TrieNode curr = root;
     	 Queue<TrieNode> queue = new LinkedList<TrieNode>();
     	 
